@@ -10,6 +10,8 @@ import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.jvm.toolchain.JavaToolchainService
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class CompositeBuildPluginAndroidApp : Plugin<Project> {
     override fun apply(target: Project) {
@@ -43,12 +45,18 @@ class CompositeBuildPluginAndroidApp : Plugin<Project> {
                     compose = true
                 }
                 compileOptions {
-                    sourceCompatibility = JavaVersion.VERSION_23
-                    targetCompatibility = JavaVersion.VERSION_23
+                    sourceCompatibility = JavaVersion.VERSION_25
+                    targetCompatibility = JavaVersion.VERSION_25
                 }
             }
             target.extensions.getByType(JavaPluginExtension::class.java).apply {
-                toolchain.languageVersion.set(org.gradle.jvm.toolchain.JavaLanguageVersion.of(23))
+                toolchain.languageVersion.set(org.gradle.jvm.toolchain.JavaLanguageVersion.of(26))
+            }
+
+            target.tasks.withType(KotlinCompile::class.java).configureEach {
+                compilerOptions {
+                    jvmTarget.set(JvmTarget.JVM_25)
+                }
             }
             // Hilt missing Java Toolchain support https://github.com/google/dagger/issues/4623
 val toolchains = target.extensions.getByType(JavaToolchainService::class.java)
@@ -57,7 +65,7 @@ target.tasks.withType(JavaCompile::class.java)
      .configureEach {
          javaCompiler.set(
              toolchains.compilerFor {
-                 languageVersion.set(JavaLanguageVersion.of(23))
+                 languageVersion.set(JavaLanguageVersion.of(26))
              }
          )
      }
