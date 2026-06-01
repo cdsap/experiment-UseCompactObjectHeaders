@@ -32,8 +32,8 @@ class CompositeBuildPluginAndroidLib : Plugin<Project> {
                     }
                 }
                 compileOptions {
-                    sourceCompatibility = JavaVersion.VERSION_23
-                    targetCompatibility = JavaVersion.VERSION_23
+                    sourceCompatibility = JavaVersion.VERSION_25
+                    targetCompatibility = JavaVersion.VERSION_25
                 }
                 buildFeatures {
                     compose = true
@@ -41,7 +41,7 @@ class CompositeBuildPluginAndroidLib : Plugin<Project> {
             }
 
             target.extensions.getByType(JavaPluginExtension::class.java).apply {
-                toolchain.languageVersion.set(org.gradle.jvm.toolchain.JavaLanguageVersion.of(23))
+                toolchain.languageVersion.set(org.gradle.jvm.toolchain.JavaLanguageVersion.of(26))
             }
 
             dependencies {
